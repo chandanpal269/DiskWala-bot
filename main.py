@@ -774,7 +774,6 @@ async def admin_text(update, context):
         )
         return
 
-
 # ============================================================
 # REMOVE VIDEO
 # ============================================================
@@ -785,4 +784,22 @@ async def removevideo(update, context):
 
     if not context.args:
         await update.message.reply_text(
-            "Use:\n/rem
+            "Use:\n/removevideo CODE"
+        )
+        return
+
+    code = context.args[0].strip()
+
+    if code not in videos:
+        await update.message.reply_text(
+            f"❌ Video not found:\n{code}"
+        )
+        return
+
+    del videos[code]
+    save_json(VIDEOS_FILE, videos)
+
+    await update.message.reply_text(
+        f"✅ Video removed successfully.\n\n"
+        f"Code: {code}"
+    )
